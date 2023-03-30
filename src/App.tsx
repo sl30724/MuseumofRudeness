@@ -23,7 +23,7 @@ function App() {
        const camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000)
 
        It also renders the scene every frame */}
-      <Canvas camera={{position:[-5, 5, 10], fov:fov, near: near, far:far}}style={{ background: "#D0C4C3" }} dpr={window.devicePixelRatio}>
+      <Canvas camera={{position:[-5, 5, 10], fov:fov, near: near, far:far}} style={{ background: "#D0C4C3"}} dpr={window.devicePixelRatio}>
         {/* background color can also be set like this */}
         <ambientLight intensity={0.2} />
         <directionalLight color={"white"} intensity={0.8} position={[-10, 10, 10]} />

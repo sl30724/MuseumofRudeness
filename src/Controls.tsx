@@ -6,31 +6,31 @@ import { OrbitControls } from '@react-three/drei';
 export interface Props {
     clicked: boolean;
 }
-const Controls = forwardRef<OrbitControlsImpl>(function Controls(props, ref) {
+// const Controls = forwardRef<OrbitControlsImpl>(function Controls(props, ref) {
 
-    const { gl, camera } = useThree();
+//     const { gl, camera } = useThree();
     
-    return (
-        <OrbitControls
-            makeDefault
-            ref={ref}
-            enabled={true}
-            mouseButtons={{ LEFT: THREE.MOUSE.PAN, MIDDLE: THREE.MOUSE.DOLLY, RIGHT: THREE.MOUSE.PAN }}
-            args={[camera, gl.domElement]}
-            enablePan={true}
-            enableRotate={false}
-            enableZoom={false}
-            minDistance={7}
-            maxDistance={13}
-            enableDamping={true}
-            panSpeed={0.5}
-            zoomSpeed={0.5}
-        />
-)
-}   )
+//     return (
+//         <OrbitControls
+//             makeDefault
+//             ref={ref}
+//             enabled={true}
+//             mouseButtons={{ LEFT: THREE.MOUSE.PAN, MIDDLE: THREE.MOUSE.DOLLY, RIGHT: THREE.MOUSE.PAN }}
+//             args={[camera, gl.domElement]}
+//             enablePan={true}
+//             enableRotate={false}
+//             enableZoom={false}
+//             minDistance={7}
+//             maxDistance={13}
+//             enableDamping={true}
+//             panSpeed={0.5}
+//             zoomSpeed={0.5}
+//         />
+// )
+// }   )
 
 
-export default Controls;
+// export default Controls;
 // useFrame(() => {
 //         if (!orbitEnabled) {
 //             controlsRef.current.saveState();

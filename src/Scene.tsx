@@ -1,70 +1,129 @@
 import { useRef, useState, useEffect, Suspense } from 'react';
 import * as THREE from 'three';
-import { useFrame, ThreeElements } from '@react-three/fiber';
+import { useFrame, ThreeElements, useThree } from '@react-three/fiber';
 import { OrbitControls as OrbitControlsImpl } from 'three-stdlib';
-import Controls from './Controls';
-import Tissue from "./Tissuepapper";
+import { OrbitControls, Html } from '@react-three/drei';
 import Exhibit1 from './Exhibit1';
+import "./styles/scene.css"
 
+interface CamControls {
+    orbitAbled: boolean;
+    // newCamPos: THREE.Vector3;
+    cameraTarget: THREE.Vector3;
+}
+
+interface ExpoDetails {
+    orbitAbled: boolean;
+}
+let newCamPos = new THREE.Vector3();
+let newTarget = new THREE.Vector3();
 export default function Scene() {
-    const controlsRef = useRef<OrbitControlsImpl>(null!);
+
     const exhibit1Ref = useRef<THREE.Group>(null!);
-    const [paused, setPaused] = useState(false);
-    const [cameraPosition, setCameraPosition] = useState<THREE.Vector3>();
-    const [cameraTarget, setCameraTarget] = useState<THREE.Vector3>();
-    let vec = new THREE.Vector3();
+    const [orbitAbled, setOrbitAbled] = useState(true);
+
 
 
     const handlePauseToggle = () => {
-        setPaused(!paused);
-        //setCameraPosition(exhibit1Ref.current.position);
-        // setCameraTarget(exhibit1Ref.current.position);
-        if (paused) {
-            controlsRef.current.saveState();
-            // controlsRef.current.update();
-        }
-         else if (!paused && controlsRef.current.target0 !== controlsRef.current.target) {
-            controlsRef.current.reset();
-        }
-        // else if (!paused && controlsRef.current.position0 == null) {
-        //     controlsRef.current.enabled = true;
-        // }
+        setOrbitAbled(!orbitAbled);
+        newCamPos.set(exhibit1Ref.current.position.x - 5, exhibit1Ref.current.position.y - 1, exhibit1Ref.current.position.z + 2);
+        newTarget.set(exhibit1Ref.current.position.x - 2, exhibit1Ref.current.position.y + 1, exhibit1Ref.current.position.z);
     };
-
-    useEffect(() => {
-        console.log(paused, controlsRef.current.enabled, controlsRef.current.position0);
-    }, [paused]);
-
-    useFrame((state) => {
-        const camera = controlsRef.current.object;
-        if (paused) {
-            // const camera = controlsRef.current.object;
-            controlsRef.current.target = exhibit1Ref.current.position;
-            controlsRef.current.enabled = false;
-            
-            camera.lookAt(exhibit1Ref.current.position);
-            camera.position.lerp(vec.set(exhibit1Ref.current.position.x, exhibit1Ref.current.position.y-1, exhibit1Ref.current.position.z+5), 0.05);
-            // state.camera.position.lerp(cameraPosition ?, 0.05);
-            // state.camera.lookAt(cameraTarget.x, cameraTarget?.y, cameraTarget?.z);
-            camera.updateMatrixWorld();
-            // controlsRef.current.update();
-        } 
-        if (!paused && controlsRef.current.target0 !== controlsRef.current.target) {
-            // controlsRef.current.reset();
-            camera.position.lerp(controlsRef.current.position0, 0.01);
-            controlsRef.current.target = controlsRef.current.target0;
-            controlsRef.current.enabled = true;
-            camera.updateMatrixWorld();           
-        }
-    });
 
     return (
         <>
-            <group  ref={exhibit1Ref} onClick={() => handlePauseToggle()} position={[1, 0, 0]} name={"e1"}>
+            <group ref={exhibit1Ref} onClick={() => handlePauseToggle()} position={[1, 0, 0]} name={"e1"}>
                 <Exhibit1 />
             </group>
-            <Controls ref={controlsRef} />
+            <ExpoDetails orbitAbled={orbitAbled} />
+
+            <Controls orbitAbled={orbitAbled} cameraTarget={newTarget} />
         </>
     )
 };
 
+function Controls(props: CamControls) {
+    const controlsRef = useRef<OrbitControlsImpl>(null!);
+    let camera = useThree((state) => state.camera);
+    let gl = useThree((state) => state.gl);
+    useEffect(() => {
+        if (controlsRef.current) {
+            if (!props.orbitAbled) {
+                controlsRef.current.saveState();
+            }
+            if (props.orbitAbled) {
+                controlsRef.current.reset();
+            }
+        }
+
+    }, [props.orbitAbled, camera])
+
+    useFrame(() => {
+        if (!props.orbitAbled) {
+            camera.position.lerp(newCamPos, 0.1);
+            camera.lookAt(newTarget);
+            
+        }
+    }, -2);
+
+    return (
+        <OrbitControls
+            makeDefault
+            ref={controlsRef}
+            enabled={props.orbitAbled}
+            mouseButtons={{ LEFT: THREE.MOUSE.PAN, MIDDLE: THREE.MOUSE.DOLLY, RIGHT: THREE.MOUSE.PAN }}
+            target={props.cameraTarget}
+            args={[camera, gl.domElement]}
+            enablePan={true}
+            enableRotate={false}
+            enableZoom={false}
+            minDistance={7}
+            maxDistance={13}
+            // enableDamping={true}
+            panSpeed={0.7}
+            zoomSpeed={0.5}
+        />
+    )
+}
+
+function ExpoDetails(props: ExpoDetails) {
+    const [shown, setShown] = useState(false);
+    const [selected, setSelected] = useState("");
+    const handleSelected = () => {
+        setSelected(HTMLButtonElement.name);
+    }
+
+    useEffect(() => {
+        if (props.orbitAbled) {
+            setShown(false)
+        };
+
+        function onTimeout() {
+            if (!props.orbitAbled) {
+                setShown(true)
+            }
+        };
+
+        const timeoutId = setTimeout(onTimeout, 1500);
+
+        return () => {
+            clearTimeout(timeoutId);
+        }
+    }, [props.orbitAbled]);
+
+    return (
+        <Html {...props} fullscreen={true}>
+            <div className={`expoDetails-${shown ? "shown" : "hidden"}`}>
+                <h1>Sniff or Blow</h1>
+                <p>While in some cultures blowing your nose is considered more acceptable than sniffing, it is commonly considered rude in some cultures to blow your nose loudly in public.</p>
+                <h4>It is rude in...</h4>
+                <div className="guess">
+                    <button className='guess-but' onClick={handleSelected}> Japan </button>
+                    <button className='guess-but' onClick={handleSelected}> United Kingdoms </button>
+                    <button className='guess-but' onClick={handleSelected}> Norway </button>
+                    <button className='guess-but' onClick={handleSelected}> Turkey </button>
+                </div>
+            </div>
+        </Html>
+    )
+}
