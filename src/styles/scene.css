@@ -1,9 +1,9 @@
-.expoDetails-shown {
+.popup-shown {
     display: flex;
     flex-direction: column;
-    max-width: 50%;
+    max-width: 30%;
 }
 
-.expoDetails-hidden {
+.popup-hidden {
     display: none;
 }
