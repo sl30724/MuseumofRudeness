@@ -5,6 +5,7 @@ import { PerspectiveCamera, OrbitControls, useHelper } from '@react-three/drei';
 import { OrbitControls as OrbitControlsImpl } from 'three-stdlib';
 import Exhibit from './Exhibit';
 import ExpoDetails from './ExpoDetails';
+import Nav from './Nav';
 import './styles/styles.css';
 
 
@@ -20,13 +21,15 @@ function App() {
   // define frustrum
   const near = 0.1; // the near clipping plane, anything closer to the camera than this will be invisible
   const far = 100; // the far clipping plane, anything further away from the camera than this will be invisible
-
   const [orbitAbled, setOrbitAbled] = useState<boolean>(true);
   const [selectedObj, setSelectedObj] = useState<string>();
+  const [selected3D, setSelected3D] = useState<THREE.Object3D>();
 
   const handlePauseToggle = (e: ThreeEvent<MouseEvent>) => {
     e.stopPropagation();
     setOrbitAbled(!orbitAbled);
+    setSelectedObj(e.eventObject.name);
+    setSelected3D(e.eventObject);
     to.set(e.eventObject.position.x - 5, e.eventObject.position.y - 0.5, e.eventObject.position.z + 2);
     newTarget.set(e.eventObject.position.x - 2, e.eventObject.position.y + 1, e.eventObject.position.z);
     e.eventObject.updateMatrixWorld();
@@ -41,26 +44,35 @@ function App() {
        const camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000)
 
        It also renders the scene every frame */}
-      <ExpoDetails orbitAbled={orbitAbled} />
+      <Nav />
+      <ExpoDetails orbitAbled={orbitAbled} selectedObj={selectedObj} />
+
       <Canvas style={{ background: "#D0C4C3" }} dpr={window.devicePixelRatio} shadows>
         {/* background color can also be set like this */}
         <PerspectiveCamera makeDefault position={[-5, 5, 10]} />
+
         <ambientLight intensity={0.2} />
-        <directionalLight color={"white"} intensity={0.8} position={[-20, 20, -20]}/>
-        <spotLight position={[-10, 10, -50]} intensity={0.5} color={"#FFDEAD"}  />
+        <directionalLight color={"white"} intensity={0.8} position={[-20, 20, -20]} />
+        <spotLight position={[-10, 10, -50]} intensity={0.5} color={"#FFDEAD"} />
+
         <axesHelper args={[5]} />
-        <group position={[0, 1, 0]} name={"e1"} onClick={(e) => handlePauseToggle(e)}>
+
+        <group position={[0, 1, 0]} name={"TissuePaper"} onClick={(e) => handlePauseToggle(e)}>
           {/* <directionalLight position={[0, 4, 0]} intensity={0.3} color={"#FFDEAD"} castShadow /> */}
           <Exhibit eName="TissuePaper" />
         </group>
-        <group position={[-4, 1, -10]} onClick={(e) => handlePauseToggle(e)} receiveShadow castShadow>
+
+        <group position={[-4, 1, -10]} name={"Hand"} onClick={(e) => handlePauseToggle(e)} receiveShadow castShadow>
           <Exhibit eName="Hand" />
         </group>
+
         <mesh position={[0, 0, -20]} rotation={[Math.PI * -0.5, 0, 0]} receiveShadow>
           <planeBufferGeometry attach="geometry" args={[50, 50]} />
           <meshStandardMaterial color={"#A08C8B"} />
         </mesh>
+
         <Controls orbitAbled={orbitAbled} />
+
       </Canvas>
 
     </div>
@@ -86,7 +98,7 @@ function Controls(props: CamControls) {
     }
   }, [props.orbitAbled]);
 
-  useFrame((state) => {
+  useFrame((state, delta) => {
     if (!props.orbitAbled && controlsRef) {
       state.camera.lookAt(newTarget);
       state.camera.position.lerp(to, 0.05);
@@ -108,7 +120,6 @@ function Controls(props: CamControls) {
       ref={controlsRef}
       enabled={props.orbitAbled}
       mouseButtons={{ LEFT: THREE.MOUSE.PAN, MIDDLE: THREE.MOUSE.DOLLY, RIGHT: THREE.MOUSE.PAN }}
-      // target={props.cameraTarget}
       args={[camera, gl.domElement]}
       enablePan={true}
       enableRotate={false}
