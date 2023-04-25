@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 import { Canvas, ThreeEvent, useThree, useFrame } from '@react-three/fiber';
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useLayoutEffect } from 'react';
 import { PerspectiveCamera, OrbitControls, useHelper } from '@react-three/drei';
 import { OrbitControls as OrbitControlsImpl } from 'three-stdlib';
 import Exhibit from './Exhibit';
@@ -25,12 +25,18 @@ function App() {
   const [selectedObj, setSelectedObj] = useState<string>();
   const [selected3D, setSelected3D] = useState<THREE.Object3D>();
 
+  const [spotTarget1] = useState(() => new THREE.Object3D());
+  const [spotTarget2] = useState(() => new THREE.Object3D());
+  const [spotTarget3] = useState(() => new THREE.Object3D());
+  const [spotTarget4] = useState(() => new THREE.Object3D());
+  const [spotTarget5] = useState(() => new THREE.Object3D());
+
   const handlePauseToggle = (e: ThreeEvent<MouseEvent>) => {
     e.stopPropagation();
     setOrbitAbled(!orbitAbled);
     setSelectedObj(e.eventObject.name);
     setSelected3D(e.eventObject);
-    to.set(e.eventObject.position.x - 5, e.eventObject.position.y - 0.5, e.eventObject.position.z + 2);
+    to.set(e.eventObject.position.x - 5, e.eventObject.position.y - 0.5, e.eventObject.position.z+2);
     newTarget.set(e.eventObject.position.x - 2, e.eventObject.position.y + 1, e.eventObject.position.z);
     e.eventObject.updateMatrixWorld();
   };
@@ -48,26 +54,40 @@ function App() {
       <ExpoDetails orbitAbled={orbitAbled} selectedObj={selectedObj} />
 
       <Canvas style={{ background: "#D0C4C3" }} dpr={window.devicePixelRatio} shadows>
-        {/* background color can also be set like this */}
         <PerspectiveCamera makeDefault position={[-5, 5, 10]} />
-
-        <ambientLight intensity={0.2} />
-        <directionalLight color={"white"} intensity={0.8} position={[-20, 20, -20]} />
-        <spotLight position={[-10, 10, -50]} intensity={0.5} color={"#FFDEAD"} />
+        <ambientLight intensity={0.3} color={"white"} />
+        <directionalLight color={"white"} intensity={0.8} position={[-6, 4, -5]} />
 
         <axesHelper args={[5]} />
 
-        <group position={[0, 1, 0]} name={"TissuePaper"} onClick={(e) => handlePauseToggle(e)}>
-          {/* <directionalLight position={[0, 4, 0]} intensity={0.3} color={"#FFDEAD"} castShadow /> */}
+        <group position={[0, 0.6, 0]} name={"TissuePaper"} onClick={(e) => handlePauseToggle(e)}>
+          <spotLight position={[0, 5, 0]} angle={Math.PI/4} penumbra={0.6} intensity={0.5} color={"#FFDEAD"} target={spotTarget1} castShadow/>
+          <primitive object={spotTarget1} position={[0, 1, 0]} />
           <Exhibit eName="TissuePaper" />
         </group>
 
-        <group position={[-4, 1, -10]} name={"Hand"} onClick={(e) => handlePauseToggle(e)} receiveShadow castShadow>
-          <Exhibit eName="Hand" />
+        <group position={[-4, 0.6, -10]} name={"Hand"} onClick={(e) => handlePauseToggle(e)} receiveShadow castShadow>
+          <spotLight position={[0, 5, 0]} angle={Math.PI/4} penumbra={0.6} intensity={0.5} color={"#FFDEAD"} target={spotTarget2} castShadow/>
+          <primitive object={spotTarget2} position={[0, 1, 0]} />
+          <Exhibit eName="Hand" eScale={0.7}/>
+        </group>
+
+        <group position={[10, 0.6, -6]} name={"Head"} onClick={(e) => handlePauseToggle(e)} receiveShadow castShadow>
+          <spotLight position={[0, 5, 0]} angle={Math.PI/4} penumbra={0.6} intensity={0.5} color={"#FFDEAD"} target={spotTarget3} castShadow/>
+          <primitive object={spotTarget3} position={[0, 1, 0]} />
+          <Exhibit eName="Head" eScale={0.3}/>
+        </group>
+
+        <group position={[4, 0.6, -16]} name={"Seat"} onClick={(e) => handlePauseToggle(e)} receiveShadow castShadow>
+          <spotLight position={[0, 10, 0]} angle={Math.PI/6} penumbra={0.6} intensity={0.5} color={"#FFDEAD"} target={spotTarget4} castShadow/>
+          <spotLight position={[2, 10, 2]} angle={Math.PI/9} penumbra={0.6} intensity={0.7} color={"#FFDEAD"} target={spotTarget5} castShadow/>
+          <primitive object={spotTarget4} position={[0, 1, 0]} />
+          <primitive object={spotTarget5} position={[0, 3, -1]} />
+          <Exhibit eName="Seat" eScale={0.5}/>
         </group>
 
         <mesh position={[0, 0, -20]} rotation={[Math.PI * -0.5, 0, 0]} receiveShadow>
-          <planeBufferGeometry attach="geometry" args={[50, 50]} />
+          <planeGeometry attach="geometry" args={[80, 80]} />
           <meshStandardMaterial color={"#A08C8B"} />
         </mesh>
 
@@ -131,6 +151,6 @@ function Controls(props: CamControls) {
       zoomSpeed={0.5}
     />
   )
-}
+};
 
 export default App;

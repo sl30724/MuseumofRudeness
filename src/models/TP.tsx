@@ -22,13 +22,13 @@ export function TissuePaper(props: JSX.IntrinsicElements["group"]) {
         <group rotation={[Math.PI / 2, 0, 0]}>
           <group scale={2}>
             <mesh
-              // castShadow
+              castShadow
               receiveShadow
               geometry={nodes.Object_4.geometry}
               material={materials.tissuePaper}
             />
             <mesh
-              // castShadow
+              castShadow
               receiveShadow
               geometry={nodes.Object_5.geometry}
               material={materials["tissuePaper-1"]}

@@ -7,25 +7,27 @@ export default function Nav() {
 
     return (
         <>
-            <nav role='Navigation bar' aria-label='Navigation bar'>
-                <div className='hambuger'>
-                    <Hamburger
-                        label="Open Menu"
-                        rounded size={32}
-                        distance="md"
-                        direction="left"
-                        toggled={navOpen}
-                        toggle={setNavOpen} />
-                </div>
-            </nav>
+            <div className='hambuger'>
+                <Hamburger
+                    label="Menu Toggle Button"
+                    rounded size={32}
+                    distance="md"
+                    direction="left"
+                    toggled={navOpen}
+                    toggle={setNavOpen} />
+            </div>
             <div className={`menuLayer-${navOpen ? "shown" : "hidden"}`}>
-                <p>We invite you to join us on an interactive experience that examines your knowledge on different culture nuances when it comes to rude behaviors.</p>
-                <p>Don't worry. We won't judge you too hard.</p>
-                <h2>View Exhibits</h2>
-                <ul>
-                    <li><a href="#exhibit1" id="TissuePaper">Sniff or Blow</a></li>
-                    <li><a href="#exhibit2" id="Hand">Ten Little Fingers</a></li>
-                </ul>
+                <div className={`menuContent-${navOpen ? "shown" : "hidden"}`}>
+                    <p>We invite you to join us on an interactive experience that examines your knowledge on different culture nuances when it comes to rude behaviors.</p>
+                    <br></br>
+                    <p>Don't worry. We won't judge you too hard.</p>
+                    <br></br>
+                    <h4>View Exhibits</h4>
+                    <ul>
+                        <li><a href="#exhibit1" id="TissuePaper"><h5>Sniff or Blow</h5></a></li>
+                        <li><a href="#exhibit2" id="Hand"><h5>Ten Little Fingers</h5></a></li>
+                    </ul>
+                </div>
             </div>
         </>
     );

@@ -5,6 +5,8 @@ import { Vector3, Euler } from "@react-three/fiber";
 // import Loader from "./Loader";
 import { TissuePaper } from "./models/TP";
 import { Hand } from "./models/Hand";
+import { Head } from "./models/Head";
+import { Seat } from "./models/Seat";
 
 interface Exhibit {
     children?: ReactNode;
@@ -21,7 +23,9 @@ export default function Exhibit(props: Exhibit) {
         // {/* equals to const mesh = new THREE.Mesh() */}
         <group position={props.gPosition}>
             {props.eName==="TissuePaper" && <TissuePaper position={[0, 1.5, 0]}/>}
-            {props.eName==="Hand" && <Hand position={[0, 0.5, 0]}/>}
+            {props.eName==="Hand" && <Hand position={[0, 0.5, 0]} scale={props.eScale}/>}
+            {props.eName==="Head" && <Head position={[0, 2, 0]} scale={props.eScale}/>}
+            {props.eName=== "Seat" && <Seat position={[0, 1.5, 0]} scale={props.eScale}/>}
             {/* <Suspense fallback={null} >
                 <mesh receiveShadow castShadow>
                 <Loader gName={props.eName} position={props.ePosition} scale={props.eScale} ></Loader>
