@@ -22,6 +22,7 @@ body {
   letter-spacing: 0.5px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  color: #201A1A;
 }
 
 p {
@@ -32,7 +33,12 @@ p {
   line-height: 150%;
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-family: 'Playfair Display', serif;
   font-weight: 400;
 }
@@ -72,7 +78,8 @@ button {
   letter-spacing: 1.25px;
 }
 
-.subtitle, .title {
+.subtitle,
+.title {
   font-family: 'Playfair Display', serif;
   font-weight: 400;
 }
@@ -84,13 +91,14 @@ button {
 }
 
 .popup-shown {
-  position:absolute;
+  position: absolute;
   left: 5%;
-  bottom: 25%;
+  top: 20%;
   display: flex;
   flex-direction: column;
   z-index: 5;
-  width: 30%;
+  width: 35%;
+  color: #524343;
 }
 
 .expoInfo-hidden {
@@ -102,6 +110,10 @@ button {
   flex-direction: column;
 }
 
+.expoInfo-shown .prompt {
+  margin: 8px;
+}
+
 .answerInfo-hidden {
   display: none;
 }
@@ -110,6 +122,128 @@ button {
   display: flex;
   flex-direction: column;
 }
+
+.h2-correct {
+  color: #745A2F;
+}
+
+.h2-wrong {
+  color: #690005;
+}
+
+/* buttons */
+
+.guess {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.guess .guess-but {
+  display: flex;
+  flex: 1 0 calc(100%/2 - 16px);
+  justify-content: center;
+  align-items: center;
+  padding: 16px 32px;
+  margin: 8px;
+  background: #ECE0DF;
+  color: #201A1A;
+  border: none;
+  border-radius: 20px;
+}
+
+.guess-but:hover {
+  box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.3);
+  transform: scale(1.05);
+}
+
+.guess-but:focus {
+  background: #FFDAD9;
+  box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.3);
+}
+
+.answer-but {
+  background: #FFDEAD;
+  margin: 24px 8px;
+  border: none;
+  color: #201A1A;
+  padding: 8px 16px;
+  border-radius: 20px;
+}
+
+.answer-but:hover {
+  transform: scale(1.02);
+  border: 1px solid #201A1A;
+  box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.3);
+}
+
+.answer-arrow {
+  color: #201A1A;
+  font-size: 20px;
+  margin: -5px 5px;
+}
+
+.correct-answer {
+  background: #FFDEAD;
+  color: #201A1A;
+  border: none;
+  border-radius: 20px;
+  padding: 8px 16px;
+  margin: 8px;
+}
+
+.logo {
+  position: absolute;
+  left: 0%;
+  top: 0%;
+  margin: 16px 25px;
+  z-index: 25;
+}
+
+
+/* exit but */
+
+.exit-hidden {
+  display: none;
+}
+
+.exit-shown {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  right: 80px;
+  top: 0%;
+  margin: 15px 25px;
+  z-index: 20;
+  /* padding: 14px 14px; */
+  border: none;
+  color: #ECE0DF;
+  background-color: #AD8887;
+  border-radius: 40px;
+}
+
+.exit-but {
+  box-sizing: content-box;
+  background: none;
+  padding: 14px;
+  border: none;
+  font-size: 32px;
+  color: #ECE0DF;
+}
+
+.exit-shown:hover {
+  cursor: pointer;
+  background-color: #ECE0DF;
+  color: #AD8887;
+  border: 1.5px solid #AD8887;
+  box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.3);
+}
+
+.exit-but:hover {
+  color: #AD8887;
+}
+
 
 /* nav menu */
 
@@ -121,9 +255,16 @@ button {
   padding: 5px;
   z-index: 15;
   color: #ECE0DF;
-  background: #D0C4C3;
   background-color: #AD8887;
   border-radius: 40px;
+}
+
+.hambuger:hover {
+  cursor: pointer;
+  background-color: #ECE0DF;
+  color: #AD8887;
+  border: 1.5px solid #AD8887;
+  box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.3);
 }
 
 .menuLayer-hidden {
@@ -132,7 +273,7 @@ button {
 }
 
 .menuLayer-shown {
-  position:absolute;
+  position: absolute;
   right: 0%;
   top: 0%;
   display: flex;
@@ -149,7 +290,7 @@ button {
 .menuContent-shown {
   display: flex;
   flex-direction: column;
-  position:absolute;
+  position: absolute;
   left: 5%;
   top: 12%;
   width: 70%;
@@ -180,6 +321,7 @@ button {
   0% {
     opacity: 0;
   }
+
   100% {
     opacity: 0.9;
   }
@@ -189,6 +331,7 @@ button {
   0% {
     top: 200%;
   }
+
   100% {
     top: 12%;
   }

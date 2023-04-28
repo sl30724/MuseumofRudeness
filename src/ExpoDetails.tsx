@@ -1,6 +1,5 @@
-// import { Html } from "@react-three/drei";
 import { useState, useEffect, MouseEvent } from 'react';
-import { Vector3, useThree } from "@react-three/fiber";
+import { Icon } from '@iconify/react';
 
 interface Expo {
     orbitAbled: boolean;
@@ -25,7 +24,7 @@ export default function ExpoDetails(props: Expo) {
         options: ["Japan", "United Kingdoms", "Norway", "Turkey"],
         correctAnswer: "Japan",
         desc: "Blowing your nose loudly in public can be considered bad manners in ",
-        expl: "Blowing your nose loudly in public is considered to be unhygienic and disruptive. Instead, people sniffle to avoid making noise. Like all old customs, this belief has been challenged in recent years. While it’s not a “taboo” to blow your nose in public anymore, you’d still receive some startled stares."
+        expl: "In Japan, blowing your nose loudly is considered to be unhygienic and disruptive. Instead, people sniffle to avoid making noise. While this belief has been challenged in recent years, you’d still receive some startled stares if you blow your nose in public."
     }, {
         name: "Hand",
         heading: "Ten Fingers",
@@ -53,8 +52,7 @@ export default function ExpoDetails(props: Expo) {
     }
 ];
 
-    // const [selectedDetails, setSelectedDetails] = useState();
-    const tissuepaper = details.filter((detail) => detail.name === "TissuePaper");
+
     const [selectedDetails, setSelectedDetails] = useState<Details[]>([{
         name: "",
         heading: "",
@@ -101,6 +99,12 @@ export default function ExpoDetails(props: Expo) {
         }
     }, [props.selectedObj]);
 
+    useEffect(() => {
+        if (answer === selectedDetails[0].correctAnswer) {
+            setScore(score + 1);
+        }
+    }, [answer]);
+
     const buttonItems = selectedDetails[0].options.map((option) =>
         <button className='guess-but' onClick={handleSelected} name={option}>
             {option}
@@ -118,18 +122,24 @@ export default function ExpoDetails(props: Expo) {
 
     return (
         <div className={`popup-${shown ? "shown" : "hidden"}`}>
-            <div className={`expoInfo-${answered ? "hidden" : "showned"}`}>
-                <h2>{selectedDetails[0].heading}</h2>
+            <div className={`expoInfo-${answered ? "hidden" : "shown"}`}>
+                <h3>{selectedDetails[0].heading}</h3>
+                <div className="prompt">
                 <p>{selectedDetails[0].content}</p>
+                </div>
+                <br></br>
                 <h4>It is rude in...</h4>
                 <div className="guess">
                     {buttonItems}
                 </div>
-                {answer && <button className='answer-show' onClick={showAnswer}> You selected <span>{answer}</span>. See Answer. </button>}
+                {answer && <button className='answer-but' onClick={showAnswer}> See Answer <Icon icon="material-symbols:arrow-outward-rounded" className="answer-arrow"/></button>}
             </div>
             <div className={`answerInfo-${answered ? "shown" : "hidden"}`}>
-                {answer === selectedDetails[0].correctAnswer ? <h2>Correct!</h2> : <h2>Wrong!</h2>}
-                <p>{selectedDetails[0].desc} <span>{selectedDetails[0].correctAnswer}</span>.</p>
+                {answer === selectedDetails[0].correctAnswer ? <h2 className='h2-correct'>Correct!</h2> : <h2 className='h2-wrong'>Wrong!</h2>}
+                <h6>{selectedDetails[0].desc}...</h6>
+                <br></br>
+                <p><span className='correct-answer'>{selectedDetails[0].correctAnswer}</span></p>
+                <br></br>
                 <p>{selectedDetails[0].expl}</p>
             </div>
         </div>

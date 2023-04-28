@@ -1,5 +1,5 @@
 import { useTexture } from "@react-three/drei";
-import { Suspense, ReactNode } from "react";
+import { ReactNode } from "react";
 import { Vector3, Euler } from "@react-three/fiber";
 // import * as THREE from "three";
 // import Loader from "./Loader";
@@ -8,7 +8,7 @@ import { Hand } from "./models/Hand";
 import { Head } from "./models/Head";
 import { Seat } from "./models/Seat";
 
-interface Exhibit {
+interface ExhibitType {
     children?: ReactNode;
     eName: string;
     eScale?: number | undefined; 
@@ -17,7 +17,7 @@ interface Exhibit {
     gPosition?: Vector3 | undefined;
 }
 
-export default function Exhibit(props: Exhibit) {
+export default function Exhibit(props: ExhibitType) {
     const boxTexture = useTexture('./assets/textures/concrete_wall_008_diff_1k.jpg');
     return (
         // {/* equals to const mesh = new THREE.Mesh() */}

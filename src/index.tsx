@@ -4,6 +4,15 @@ import './styles/styles.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
+const t0 = performance.now();
+
+function renderCallback() {
+  console.log("Rendering done?");
+  const t1 = performance.now();
+
+  console.log(`Mount took ~${(t1 - t0) / 1000} seconds.`);
+}
+
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );

@@ -22,10 +22,12 @@ export default function Nav() {
                     <br></br>
                     <p>Don't worry. We won't judge you too hard.</p>
                     <br></br>
-                    <h4>View Exhibits</h4>
+                    <h4>Open Exhibits</h4>
                     <ul>
-                        <li><a href="#exhibit1" id="TissuePaper"><h5>Sniff or Blow</h5></a></li>
-                        <li><a href="#exhibit2" id="Hand"><h5>Ten Little Fingers</h5></a></li>
+                        <li><h5>Sniff or Blow</h5></li>
+                        <li><h5>Ten Little Fingers</h5></li>
+                        <li><h5>Don't Touch My Head</h5></li>
+                        <li><h5>Shotgun?</h5></li>
                     </ul>
                 </div>
             </div>
