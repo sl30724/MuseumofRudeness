@@ -1,12 +1,13 @@
 import * as THREE from 'three';
 import { Canvas, ThreeEvent, useThree, useFrame } from '@react-three/fiber';
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, Suspense } from 'react';
 import { PerspectiveCamera, OrbitControls } from '@react-three/drei';
 import { OrbitControls as OrbitControlsImpl } from 'three-stdlib';
 import { Icon } from '@iconify/react';
 import Exhibit from './Exhibit';
 import ExpoDetails from './ExpoDetails';
 import Nav from './Nav';
+import Loader from './Loader';
 import './styles/styles.css';
 
 
@@ -62,45 +63,46 @@ function App() {
       <ExpoDetails orbitAbled={orbitAbled} selectedObj={selectedObj} />
 
       <Canvas style={{ background: "#D0C4C3" }} dpr={window.devicePixelRatio} shadows>
-        <PerspectiveCamera makeDefault position={[-5, 5, 10]} />
-        <ambientLight intensity={0.3} color={"white"} />
-        <directionalLight color={"white"} intensity={0.8} position={[-6, 4, -5]} />
+        <Suspense fallback={<Loader />}>
+          <PerspectiveCamera makeDefault position={[-5, 5, 10]} />
+          <ambientLight intensity={0.3} color={"white"} />
+          <directionalLight color={"white"} intensity={0.8} position={[-6, 4, -5]} />
 
-        <axesHelper args={[5]} />
+          <axesHelper args={[5]} />
 
-        <group position={[0, 0.6, 0]} name={"TissuePaper"} onClick={(e) => handlePauseToggle(e)}>
-          <spotLight position={[0, 5, 0]} angle={Math.PI / 4} penumbra={0.6} intensity={0.5} color={"#FFDEAD"} target={spotTarget1} castShadow />
-          <primitive object={spotTarget1} position={[0, 1, 0]} />
-          <Exhibit eName="TissuePaper" />
-        </group>
+          <group position={[0, 0.6, 0]} name={"TissuePaper"} onClick={(e) => handlePauseToggle(e)}>
+            <spotLight position={[0, 5, 0]} angle={Math.PI / 4} penumbra={0.6} intensity={0.5} color={"#FFDEAD"} target={spotTarget1} castShadow />
+            <primitive object={spotTarget1} position={[0, 1, 0]} />
+            <Exhibit eName="TissuePaper" />
+          </group>
 
-        <group position={[-4, 0.6, -10]} name={"Hand"} onClick={(e) => handlePauseToggle(e)} receiveShadow castShadow>
-          <spotLight position={[0, 5, 0]} angle={Math.PI / 4} penumbra={0.6} intensity={0.5} color={"#FFDEAD"} target={spotTarget2} castShadow />
-          <primitive object={spotTarget2} position={[0, 1, 0]} />
-          <Exhibit eName="Hand" eScale={0.7} />
-        </group>
+          <group position={[-4, 0.6, -10]} name={"Hand"} onClick={(e) => handlePauseToggle(e)} receiveShadow castShadow>
+            <spotLight position={[0, 5, 0]} angle={Math.PI / 4} penumbra={0.6} intensity={0.5} color={"#FFDEAD"} target={spotTarget2} castShadow />
+            <primitive object={spotTarget2} position={[0, 1, 0]} />
+            <Exhibit eName="Hand" eScale={0.7} />
+          </group>
 
-        <group position={[10, 0.6, -6]} name={"Head"} onClick={(e) => handlePauseToggle(e)} receiveShadow castShadow>
-          <spotLight position={[0, 5, 0]} angle={Math.PI / 4} penumbra={0.6} intensity={0.5} color={"#FFDEAD"} target={spotTarget3} castShadow />
-          <primitive object={spotTarget3} position={[0, 1, 0]} />
-          <Exhibit eName="Head" eScale={0.3} />
-        </group>
+          <group position={[10, 0.6, -6]} name={"Head"} onClick={(e) => handlePauseToggle(e)} receiveShadow castShadow>
+            <spotLight position={[0, 5, 0]} angle={Math.PI / 4} penumbra={0.6} intensity={0.5} color={"#FFDEAD"} target={spotTarget3} castShadow />
+            <primitive object={spotTarget3} position={[0, 1, 0]} />
+            <Exhibit eName="Head" eScale={0.3} />
+          </group>
 
-        <group position={[4, 0.6, -16]} name={"Seat"} onClick={(e) => handlePauseToggle(e)} receiveShadow castShadow>
-          <spotLight position={[0, 10, 0]} angle={Math.PI / 6} penumbra={0.6} intensity={0.5} color={"#FFDEAD"} target={spotTarget4} castShadow />
-          <spotLight position={[2, 10, 2]} angle={Math.PI / 9} penumbra={0.6} intensity={0.7} color={"#FFDEAD"} target={spotTarget5} castShadow />
-          <primitive object={spotTarget4} position={[0, 1, 0]} />
-          <primitive object={spotTarget5} position={[0, 3, -1]} />
-          <Exhibit eName="Seat" eScale={0.5} />
-        </group>
+          <group position={[4, 0.6, -16]} name={"Seat"} onClick={(e) => handlePauseToggle(e)} receiveShadow castShadow>
+            <spotLight position={[0, 10, 0]} angle={Math.PI / 6} penumbra={0.6} intensity={0.5} color={"#FFDEAD"} target={spotTarget4} castShadow />
+            <spotLight position={[2, 10, 2]} angle={Math.PI / 9} penumbra={0.6} intensity={0.7} color={"#FFDEAD"} target={spotTarget5} castShadow />
+            <primitive object={spotTarget4} position={[0, 1, 0]} />
+            <primitive object={spotTarget5} position={[0, 3, -1]} />
+            <Exhibit eName="Seat" eScale={0.5} />
+          </group>
 
-        <mesh position={[0, 0, -20]} rotation={[Math.PI * -0.5, 0, 0]} receiveShadow>
-          <planeGeometry attach="geometry" args={[80, 80]} />
-          <meshStandardMaterial color={"#A08C8B"} />
-        </mesh>
+          <mesh position={[0, 0, -20]} rotation={[Math.PI * -0.5, 0, 0]} receiveShadow>
+            <planeGeometry attach="geometry" args={[80, 80]} />
+            <meshStandardMaterial color={"#A08C8B"} />
+          </mesh>
 
-        <Controls orbitAbled={orbitAbled} />
-
+          <Controls orbitAbled={orbitAbled} />
+        </Suspense>
       </Canvas>
 
     </div>

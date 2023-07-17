@@ -1,0 +1,17 @@
+.loadingScreen {
+    width: 100%;
+    height: 100%;
+    background-color: #5D3F3F;
+    color: #FFDAD9;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    gap: 100px;
+}
+
+.loadingLogo img {
+    display: flex;
+    width: 100%;
+}
