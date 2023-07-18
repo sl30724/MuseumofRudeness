@@ -68,8 +68,6 @@ function App() {
           <ambientLight intensity={0.3} color={"white"} />
           <directionalLight color={"white"} intensity={0.8} position={[-6, 4, -5]} />
 
-          <axesHelper args={[5]} />
-
           <group position={[0, 0.6, 0]} name={"TissuePaper"} onClick={(e) => handlePauseToggle(e)}>
             <spotLight position={[0, 5, 0]} angle={Math.PI / 4} penumbra={0.6} intensity={0.5} color={"#FFDEAD"} target={spotTarget1} castShadow />
             <primitive object={spotTarget1} position={[0, 1, 0]} />
