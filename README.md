@@ -5,7 +5,6 @@ Museum of Rudeness is a personal project inspired by my love for traveling and a
 Every trip I took expanded my mind and gave me the ability to take the perspective of others. And I wanted to share these valuable learnings with people in a fun, interactive way.
 
 See the live project here: https://museum-of-rudeness.sandylee.site/
-
 See the documentation of my work process here: https://www.behance.net/gallery/169880687/Museum-of-Rudeness
 
 ## Project Scope
